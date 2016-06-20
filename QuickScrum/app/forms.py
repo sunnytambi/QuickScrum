@@ -1,4 +1,4 @@
-"""
+﻿"""
 Definition of forms.
 """
 
@@ -11,8 +11,12 @@ class BootstrapAuthenticationForm(AuthenticationForm):
     username = forms.CharField(max_length=254,
                                widget=forms.TextInput({
                                    'class': 'form-control',
-                                   'placeholder': 'User name'}))
+                                   'type': 'email',
+                                   'autofocus': '',
+                                   'required': '',
+                                   'placeholder': 'Email address'}))
     password = forms.CharField(label=_("Password"),
                                widget=forms.PasswordInput({
                                    'class': 'form-control',
+                                   'required': '',
                                    'placeholder':'Password'}))

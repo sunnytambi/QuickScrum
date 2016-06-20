@@ -9,14 +9,16 @@
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<link rel="icon" href="../../favicon.ico">
 
     <title>{{ title }} - Quick Scrum</title>
     {% load staticfiles %}
+	<link rel="icon" href="{% static 'app/content/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<link href="{% static 'app/content/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/jumbotron-narrow.css' %}" />
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -27,32 +29,31 @@
 </head>
 
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    {#<div class="navbar navbar-inverse navbar-fixed-top">#}
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="/" class="navbar-brand">Application name</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="{% url 'home' %}">Home</a></li>
-                    <li><a href="{% url 'about' %}">About</a></li>
-                    <li><a href="{% url 'contact' %}">Contact</a></li>
-                </ul>
-                {% include 'app/loginpartial.html' %}
+            <div class="header clearfix">
+                <nav>
+                  <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="#">Home</a></li>
+                    <li role="presentation"><a href="#">About</a></li>
+                    <li role="presentation"><a href="#">Contact</a></li>
+                      {% include 'app/loginpartial.html' %}
+                  </ul>
+                </nav>
+                <h3 class="text-muted">
+                    <img src="{% static 'app/content/favicon.ico' %}" />
+                    Quick Scrum
+                </h3>
+                
             </div>
         </div>
-    </div>
+    {#</div>#}
 
     <div class="container body-content">
 {% block content %}{% endblock %}
         <hr/>
         <footer>
-            <p>&copy; {{ year }} - My Django Application</p>
+            <p>&copy; {{ year }} - Quick Scrum</p>
         </footer>
     </div>
 
@@ -61,7 +62,7 @@
     <script src="{% static 'app/scripts/respond.js' %}"></script>
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="{% static 'app/scripts/ie10-viewport-bug-workaround.js' %}"></script>
 {% block scripts %}{% endblock %}
 
 </body>

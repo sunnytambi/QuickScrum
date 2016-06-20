@@ -1,17 +1,14 @@
 {% if user.is_authenticated %}
-<form id="logoutForm" action="/logout" method="post" class="navbar-right">
+<form id="logoutForm" action="/logout" method="post" style="display:inline-block">
     {% csrf_token %}
-    <ul class="nav navbar-nav navbar-right">
-        <li><span class="navbar-brand">Hello {{ user.username }}!</span></li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+    <ul class="nav nav-pills pull-right">
+        <li role="presentation"><span class="navbar-brand" style="padding:10px 15px;">Hello {{ user.username }}!</span></li>
+        <li role="presentation"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
-
 </form>
 
 {% else %}
 
-<ul class="nav navbar-nav navbar-right">
-    <li><a href="{% url 'Signin' %}">Sign in</a></li>
-</ul>
+<li role="presentation"><a href="{% url 'login' %}">Sign in</a></li>
 
 {% endif %}

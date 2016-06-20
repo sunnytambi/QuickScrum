@@ -1,4 +1,4 @@
-"""
+﻿"""
 Definition of urls for QuickScrum.
 """
 
@@ -19,11 +19,11 @@ urlpatterns = patterns('',
     url(r'^login/$',
         'django.contrib.auth.views.login',
         {
-            'template_name': 'app/login.html',
+            'template_name': 'app/Signin.html',
             'authentication_form': BootstrapAuthenticationForm,
             'extra_context':
             {
-                'title':'Log in',
+                'title':'Sign in',
                 'year':datetime.now().year,
             }
         },
