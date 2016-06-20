@@ -3,17 +3,20 @@ Definition of urls for QuickScrum.
 """
 
 from datetime import datetime
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, include, url
 from app.forms import BootstrapAuthenticationForm
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
-# from django.contrib import admin
-# admin.autodiscover()
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'app.views.home', name='home'),
+    url(r'^status$', 'app.views.status', name='status'),
+    url(r'^dashboard$', 'app.views.dashboard', name='dashboard'),
+
+    url(r'^home$', 'app.views.home', name='home'),
     url(r'^contact$', 'app.views.contact', name='contact'),
     url(r'^about', 'app.views.about', name='about'),
     url(r'^login/$',
@@ -39,5 +42,5 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 )

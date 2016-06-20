@@ -16,10 +16,16 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-	<link href="{% static 'app/content/ie10-viewport-bug-workaround.css' %}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="{% static 'app/content/ie10-viewport-bug-workaround.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/jumbotron-narrow.css' %}" />
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
+    <script src="{% static 'app/scripts/respond.min.js' %}"></script>
+
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'app/scripts/ie10-viewport-bug-workaround.js' %}"></script>
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
@@ -34,9 +40,8 @@
             <div class="header clearfix">
                 <nav>
                   <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active"><a href="#">Home</a></li>
-                    <li role="presentation"><a href="#">About</a></li>
-                    <li role="presentation"><a href="#">Contact</a></li>
+                    <li role="presentation" class="active" name="status"><a href="/status">Status</a></li>
+                    <li role="presentation" name="dashboard"><a href="/dashboard">Dashboard</a></li>
                       {% include 'app/loginpartial.html' %}
                   </ul>
                 </nav>
@@ -57,12 +62,24 @@
         </footer>
     </div>
 
-    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
-    <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
-    <script src="{% static 'app/scripts/respond.js' %}"></script>
+    <script>
+        // Update Navigation bar highlight
 
-	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="{% static 'app/scripts/ie10-viewport-bug-workaround.js' %}"></script>
+        $("ul.nav li").removeClass("active");
+
+        if (window.location.pathname.indexOf('login') != -1) {
+            $("li[name='login']").addClass("active");
+        }
+        else if (window.location.pathname.indexOf('status') != -1) {
+            $("li[name='status']").addClass("active");
+        }
+        else if (window.location.pathname.indexOf('dashboard') != -1) {
+            $("li[name='dashboard']").addClass("active");
+        }
+        else {
+            $("li[name='status']").addClass("active");
+        }
+    </script>
 {% block scripts %}{% endblock %}
 
 </body>

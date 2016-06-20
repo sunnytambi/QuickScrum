@@ -7,6 +7,32 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
 
+def status(request):
+    """Renders the status page."""
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/status.html',
+        context_instance = RequestContext(request,
+        {
+            'title':'Log your Status',
+            'year':datetime.now().year,
+        })
+    )
+
+def dashboard(request):
+    """Renders the dashboard page."""
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/dashboard.html',
+        context_instance = RequestContext(request,
+        {
+            'title':'Dashboard',
+            'year':datetime.now().year,
+        })
+    )
+
 def home(request):
     """Renders the home page."""
     assert isinstance(request, HttpRequest)
