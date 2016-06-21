@@ -2,7 +2,7 @@
 Definition of views.
 """
 
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
@@ -10,15 +10,41 @@ from datetime import datetime
 def status(request):
     """Renders the status page."""
     assert isinstance(request, HttpRequest)
-    return render(
-        request,
-        'app/status.html',
-        context_instance = RequestContext(request,
-        {
-            'title':'Log your Status',
-            'year':datetime.now().year,
-        })
-    )
+
+    if request.method == 'POST':
+        form = StatusForm(request.POST)
+        if form.is_valid():
+            for (question, answer) in form.extra_answers():
+                save_answer(request, question, answer)
+            
+            return render_to_response("app/status.html",
+                context_instance = RequestContext(request,
+                {
+                    'title':'Log your Status',
+                    'year':datetime.now().year,
+                },
+                {'form': form}))
+                #return render(
+                #    request,
+                #    'app/status.html',
+                #    context_instance = RequestContext(request,
+                #    {
+                #        'title':'Log your Status',
+                #        'year':datetime.now().year,
+                #    })
+                #)
+    else:
+        return render(
+            request,
+            'app/status.html',
+            context_instance = RequestContext(request,
+            {
+                'title':'Log your Status',
+                'year':datetime.now().year,
+            })
+        )
+
+    #return render_to_response("app/status.html", {'form': form})
 
 def readstatus(request):
     """Renders the status page in Read Only mode."""
