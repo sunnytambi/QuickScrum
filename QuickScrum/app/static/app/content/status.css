@@ -1,0 +1,26 @@
+﻿.status-box
+{
+    border: 1px solid gray;
+    position:relative;
+}
+.status-box .textbox
+{
+    outline:none;
+    border:1px solid red;
+}
+.status-box button
+{
+    z-index:10;
+    position:absolute;
+    right:0;
+    top:0;
+    display:none;
+}
+.status-box:hover button
+{
+    display:block;
+}
+.status-box:active button, .status-box:focus button
+{
+    display:none;
+}

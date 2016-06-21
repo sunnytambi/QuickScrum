@@ -5,22 +5,25 @@ Definition of urls for QuickScrum.
 from datetime import datetime
 from django.conf.urls import patterns, include, url
 from app.forms import BootstrapAuthenticationForm
+from app.views import status, readstatus, dashboard, home, contact, about
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
 from django.contrib import admin
+from django.contrib.auth.views import login, logout
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    # Examples:
-    url(r'^status$', 'app.views.status', name='status'),
-    url(r'^dashboard$', 'app.views.dashboard', name='dashboard'),
+urlpatterns = [
+    url(r'^$', status, name='status'),
+    url(r'^status/$', status, name='status'),
+    url(r'^readstatus/$', readstatus, name='readstatus'),
+    url(r'^dashboard$', dashboard, name='dashboard'),
 
-    url(r'^home$', 'app.views.home', name='home'),
-    url(r'^contact$', 'app.views.contact', name='contact'),
-    url(r'^about', 'app.views.about', name='about'),
+    url(r'^home$', home, name='home'),
+    url(r'^contact$', contact, name='contact'),
+    url(r'^about$', about, name='about'),
     url(r'^login/$',
-        'django.contrib.auth.views.login',
+        login,
         {
             'template_name': 'app/Signin.html',
             'authentication_form': BootstrapAuthenticationForm,
@@ -32,7 +35,7 @@ urlpatterns = patterns('',
         },
         name='login'),
     url(r'^logout$',
-        'django.contrib.auth.views.logout',
+        logout,
         {
             'next_page': '/',
         },
@@ -43,4 +46,4 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-)
+]

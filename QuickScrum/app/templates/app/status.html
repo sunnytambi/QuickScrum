@@ -1,16 +1,81 @@
 ﻿{% extends "app/layout.html" %}
 
 {% block content %}
-{% load staticfiles %}
+{% load static %}
 
-<h1>Status</h1>
+<!-- Custom styles for this template -->
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/status.css' %}" />
+
+<form class="form-generic" action="." method="post">
+	{% csrf_token %}
+
+    <div class="row">
+        <div class="yesterday col-md-4">
+	        <h3>What did you do <u>Yesterday</u></h3>
+	        <div class="statuses">
+                {#<input type="text" placeholder="Yesterday's status" class='form-control' required />#}
+                {% include "app/partials/statustextboxpartial.html" with placeholder="Yesterday&#39;s status" %}
+            </div>
+            <br />
+            <button type="button" class="btn btn-default btn-add-more" data-container="Yesterday&#39;s status">+</button>
+        </div>
+        <div class="today col-md-4">
+	        <h3>What are you doing <u>Today</u></h3>
+            <div class="statuses">
+                {% include "app/partials/statustextboxpartial.html" with placeholder="Today&#39;s status" %}
+	            {#<input type="text" placeholder="Today's status" class='form-control' required />#}
+            </div>
+            <br />
+            <button type="button" class="btn btn-default btn-add-more" data-container="Today&#39;s status">+</button>
+        </div>
+        <div class="issues col-md-4">
+	        <h3>Are you facing any <u>Issues</u>?</h3>
+            <div class="statuses">
+                {% include "app/partials/statustextboxpartial.html" with placeholder="Issues" %}
+                {#<input type="text" placeholder="Issues" class='form-control' required />#}
+            </div>
+            <br />
+            <button type="button" class="btn btn-default btn-add-more" data-container="Issues">+</button>
+        </div>
+	</div>
+    <br /><br />
+	<center><button class="btn btn-lg btn-primary" type="submit">Submit</button></center>
+
+	{% if form.errors %}
+	<p class="validation-summary-errors">Please enter correct statuses.</p>
+	{% endif %}
+</form>
 
 {% endblock %}
 
 
 {% block scripts %}
 
-    {% load staticfiles %}
     <script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+    <script>
+        var statustemplate = "{% spaceless %} {% include 'app/partials/statustextboxpartial.html' with placeholder='' %} {% endspaceless %}";
+        $(".btn-add-more").click(function(){
+            var container = $(this).data( "container" );
+            var sib = $(this).siblings(".statuses").append(statustemplate);
+            var last = sib.children(":last-child").children("textarea");
+            last.attr("placeholder", container);
+            registerDeleteHandler();
+        });
+
+        function registerDeleteHandler()
+        {
+            // Remove all delegated click handlers from all paragraphs
+            $(".btn-delete").off('click', "**" );
+
+            $(".btn-delete").on('click', function(){
+                var rootDiv = $(this).parents(".statuses");
+                var numChildren = rootDiv.children().length;
+                if(numChildren > 1)
+                {
+                    $(this).parents(".input-group").remove();
+                }
+            });
+        }
+    </script>
 
 {% endblock %}

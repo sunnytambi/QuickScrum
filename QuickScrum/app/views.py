@@ -20,6 +20,19 @@ def status(request):
         })
     )
 
+def readstatus(request):
+    """Renders the status page in Read Only mode."""
+    assert isinstance(request, HttpRequest)
+    return render(
+        request,
+        'app/readstatus.html',
+        context_instance = RequestContext(request,
+        {
+            'title':'Status Submitted on 03/03/2016',
+            'year':datetime.now().year,
+        })
+    )
+
 def dashboard(request):
     """Renders the dashboard page."""
     assert isinstance(request, HttpRequest)

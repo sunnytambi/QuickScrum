@@ -47,6 +47,7 @@
     <Folder Include="app\static\app\scripts\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
+    <Folder Include="app\templates\app\partials\" />
     <Folder Include="QuickScrum\" />
   </ItemGroup>
   <ItemGroup>
@@ -60,12 +61,15 @@
     <Content Include="app\static\app\content\ie10-viewport-bug-workaround.css" />
     <Content Include="app\static\app\content\jumbotron-narrow.css" />
     <Content Include="app\static\app\content\signin.css" />
+    <Content Include="app\static\app\content\status.css" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="app\static\app\scripts\ie10-viewport-bug-workaround.js" />
     <Content Include="app\static\app\scripts\jquery-1.11.3.js" />
     <Content Include="app\static\app\scripts\jquery-1.11.3.min.js" />
     <Content Include="app\static\app\scripts\npm.js" />
     <Content Include="app\templates\app\dashboard.html" />
+    <Content Include="app\templates\app\partials\statustextboxpartial.html" />
+    <Content Include="app\templates\app\readstatus.html" />
     <Content Include="app\templates\app\Signin.html" />
     <Content Include="app\templates\app\status.html" />
     <Content Include="requirements.txt" />
@@ -97,7 +101,7 @@
     <Content Include="app\templates\app\index.html" />
     <Content Include="app\templates\app\layout.html" />
     <Content Include="app\templates\app\login.html" />
-    <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="app\templates\app\partials\loginpartial.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.mht">

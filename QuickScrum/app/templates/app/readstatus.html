@@ -1,0 +1,36 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<h2>Status Submitted on 03/03/2016</h2>
+<div class="row">
+    <div class="yesterday col-md-4">
+	    <h3>What did you do <u>Yesterday</u></h3>
+	    <ol class="statuses">
+            <li>Status 1</li>
+            <li>Status 2</li>
+            <li>Status 3</li>
+        </ol>
+    </div>
+    <div class="today col-md-4">
+	    <h3>What are you doing <u>Today</u></h3>
+        <ol>
+            <li>Status 1</li>
+            <li>Status 2</li>
+            <li>Status 3</li>
+            <li>Status 4</li>
+        </ol>
+    </div>
+    <div class="issues col-md-4">
+	    <h3>Are you facing any <u>Issues</u>?</h3>
+        <ol>
+            <li>Issue 1</li>
+            <li>Issue 2</li>
+        </ol>
+    </div>
+</div>
+<br />
+<a class="btn btn-lg btn-default" href="{% url 'dashboard' %}">&lt; Back</a>
+
+{% endblock %}

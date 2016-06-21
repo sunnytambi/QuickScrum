@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
     <meta charset="utf-8" />
@@ -36,13 +36,13 @@
 
 <body>
     {#<div class="navbar navbar-inverse navbar-fixed-top">#}
-        <div class="container">
+        <div class="container-fluid">
             <div class="header clearfix">
                 <nav>
                   <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active" name="status"><a href="/status">Status</a></li>
-                    <li role="presentation" name="dashboard"><a href="/dashboard">Dashboard</a></li>
-                      {% include 'app/loginpartial.html' %}
+                    <li role="presentation" class="active" name="status"><a href="{% url 'status' %}">Status</a></li>
+                    <li role="presentation" name="dashboard"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                      {% include 'app/partials/loginpartial.html' %}
                   </ul>
                 </nav>
                 <h3 class="text-muted">
@@ -54,7 +54,7 @@
         </div>
     {#</div>#}
 
-    <div class="container body-content">
+    <div class="container-fluid body-content">
 {% block content %}{% endblock %}
         <hr/>
         <footer>
@@ -69,6 +69,9 @@
 
         if (window.location.pathname.indexOf('login') != -1) {
             $("li[name='login']").addClass("active");
+        }
+        else if (window.location.pathname.indexOf('readstatus') != -1) {
+            // dont highlight any nav bar
         }
         else if (window.location.pathname.indexOf('status') != -1) {
             $("li[name='status']").addClass("active");
