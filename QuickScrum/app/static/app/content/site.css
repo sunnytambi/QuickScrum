@@ -35,7 +35,7 @@ input[type="checkbox"].input-validation-error {
     border: 0 none;
 }
 
-.validation-summary-errors {
+.validation-summary-errors, .errorlist {
     color: #b94a48;
 }
 
@@ -55,4 +55,14 @@ input[type="checkbox"].input-validation-error {
 }
 .form-generic .form-control:focus {
   z-index: 2;
+}
+
+.messages
+{
+    list-style:none;
+    text-align:center;
+}
+.messages .success
+{
+    color:green;
 }

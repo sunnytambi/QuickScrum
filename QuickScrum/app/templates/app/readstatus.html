@@ -8,25 +8,31 @@
     <div class="yesterday col-md-4">
 	    <h3>What did you do <u>Yesterday</u></h3>
 	    <ol class="statuses">
-            <li>Status 1</li>
-            <li>Status 2</li>
-            <li>Status 3</li>
+            {% for y in yesterday_list %}
+            <li>
+                {{y.status_text}}
+            </li>
+            {% endfor %}
         </ol>
     </div>
     <div class="today col-md-4">
 	    <h3>What are you doing <u>Today</u></h3>
         <ol>
-            <li>Status 1</li>
-            <li>Status 2</li>
-            <li>Status 3</li>
-            <li>Status 4</li>
+            {% for t in today_list %}
+            <li>
+                {{t.status_text}}
+            </li>
+            {% endfor %}
         </ol>
     </div>
     <div class="issues col-md-4">
 	    <h3>Are you facing any <u>Issues</u>?</h3>
         <ol>
-            <li>Issue 1</li>
-            <li>Issue 2</li>
+            {% for i in issue_list %}
+            <li>
+                {{i.status_text}}
+            </li>
+            {% endfor %}
         </ol>
     </div>
 </div>

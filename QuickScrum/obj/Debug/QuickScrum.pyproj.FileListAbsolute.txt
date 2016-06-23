@@ -11,3 +11,16 @@ C:\Users\sunnyt\Documents\Projects\QuickScrum\QuickScrum\bin\Microsoft.PythonToo
 C:\Users\sunnyt\Documents\Projects\QuickScrum\QuickScrum\bin\wfastcgi.py
 C:\Users\sunnyt\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\web.config
 C:\Users\sunnyt\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\web.debug.config
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\bin\Microsoft.PythonTools.WebRole.dll
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\attach_server.py
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\visualstudio_py_debugger.py
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\visualstudio_py_repl.py
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\visualstudio_py_util.py
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\__init__.py
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\__main__.py
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\bin\AzureSetup.cfg
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\bin\Microsoft.PythonTools.AzureSetup.exe
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\bin\Microsoft.PythonTools.AzureSetup.exe.config
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\bin\wfastcgi.py
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\web.config
+C:\Users\sunnyt\OneDrive - Talentica Software (I) Pvt. Ltd\Documents\Projects\QuickScrum\QuickScrum\obj\Debug\web.debug.config

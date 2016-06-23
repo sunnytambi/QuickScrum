@@ -29,6 +29,7 @@ DATABASES = {
 }
 
 LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/status/'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -43,7 +44,7 @@ TIME_ZONE = 'Asia/Kolkata'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+SITE_ID = 3
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -92,6 +93,8 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'n(bd1f1c%e8=_xad02x5qtfn%wgwpi492e$8_erx+d)!tpeoim'
+
+#SESSION_COOKIE_SECURE = False
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -161,6 +164,11 @@ LOGGING = {
         }
     },
     'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'C:/Users/sunnyt/OneDrive - Talentica Software (I) Pvt. Ltd/Documents/Projects/QuickScrum/QuickScrum/logs/debug.log',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -168,9 +176,14 @@ LOGGING = {
         }
     },
     'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
+            'handlers': ['mail_admins', 'file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
     }

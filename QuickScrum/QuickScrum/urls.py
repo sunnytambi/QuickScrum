@@ -3,37 +3,48 @@ Definition of urls for QuickScrum.
 """
 
 from datetime import datetime
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from app.forms import BootstrapAuthenticationForm
-from app.views import status, readstatus, dashboard, home, contact, about
+from app.views import status_view, readstatus_view, dashboard_view, login_view
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
+from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', status, name='status'),
-    url(r'^status/$', status, name='status'),
-    url(r'^readstatus/$', readstatus, name='readstatus'),
-    url(r'^dashboard$', dashboard, name='dashboard'),
+    url(r'^$', status_view, name='status'),
+    url(r'^status/$', status_view, name='status'),
+    url(r'^readstatus/(?P<status_id>\w+)/$', readstatus_view, name='readstatus'),
+    url(r'^dashboard$', dashboard_view, name='dashboard'),
 
-    url(r'^home$', home, name='home'),
-    url(r'^contact$', contact, name='contact'),
-    url(r'^about$', about, name='about'),
-    url(r'^login/$',
-        login,
-        {
+    #url(r'^home$', home, name='home'),
+    #url(r'^contact$', contact, name='contact'),
+    #url(r'^about$', about, name='about'),
+    url(r'^login$', login_view, {
             'template_name': 'app/Signin.html',
             'authentication_form': BootstrapAuthenticationForm,
             'extra_context':
             {
                 'title':'Sign in',
-                'year':datetime.now().year,
-            }
-        },
-        name='login'),
+                'year':now().year,
+            },
+        }, name='login'),
+    #url(r'^login$',
+    #    login,
+    #    {
+    #        'template_name': 'app/login.html',
+    #        'authentication_form': BootstrapAuthenticationForm,
+    #        'extra_context':
+    #        {
+    #            'title':'Sign in',
+    #            'year':now().year,
+    #        },
+    #    },
+    #    name='login'),
     url(r'^logout$',
         logout,
         {
