@@ -24,3 +24,29 @@
 {
     display:none;
 }
+.inner-panel .list-group .list-group-item
+{
+    font-style:italic;
+}
+.panel-body
+{
+    padding:0;
+}
+.panel-primary .panel-info
+{
+    margin:5px;
+}
+.btn-delete
+{
+    float:right;
+}
+.panel-primary .panel-heading
+{
+    padding:2px;
+    height:28px;
+}
+
+#draggablePanelList li
+{
+    cursor:move;
+}

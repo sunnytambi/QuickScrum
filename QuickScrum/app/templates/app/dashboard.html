@@ -15,9 +15,9 @@
           </tr>
         </thead>
         <tbody>
-            {% for item in statuses %}
+            {% for idx,item in statuses %}
             <tr>
-                <td>1</td>
+                <td>{{idx}}</td>
                 <td>{{item.timestamp}}</td>
                 <td><a href="{% url 'readstatus' status_id=item.id %}">Status Link</a></td>
             </tr>

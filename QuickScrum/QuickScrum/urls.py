@@ -2,16 +2,14 @@
 Definition of urls for QuickScrum.
 """
 
-from datetime import datetime
 from django.conf.urls import include, url
-from app.forms import BootstrapAuthenticationForm
-from app.views import status_view, readstatus_view, dashboard_view, login_view
+from app.forms import BootstrapAuthenticationForm, JiraAuthenticationForm
+from app.views import status_view, readstatus_view, dashboard_view, login_view, jiralogin_view
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
 from django.contrib import admin
-from django.contrib.auth.views import login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import logout
 from django.utils.timezone import now
 admin.autodiscover()
 
@@ -25,14 +23,25 @@ urlpatterns = [
     #url(r'^contact$', contact, name='contact'),
     #url(r'^about$', about, name='about'),
     url(r'^login$', login_view, {
-            'template_name': 'app/Signin.html',
-            'authentication_form': BootstrapAuthenticationForm,
-            'extra_context':
-            {
-                'title':'Sign in',
-                'year':now().year,
-            },
-        }, name='login'),
+        'template_name': 'app/Signin.html',
+        'authentication_form': BootstrapAuthenticationForm,
+        'extra_context':
+        {
+            'title':'Sign in',
+            'year':now().year,
+        },
+    }, name='login'),
+
+    url(r'^jiralogin$', jiralogin_view, {
+        'template_name': 'app/jirasignin.html',
+        'authentication_form': BootstrapAuthenticationForm,
+        'extra_context':
+        {
+            'title':'Sign in to Jira',
+            'year':now().year,
+        },
+    }, name='jiralogin'),
+
     #url(r'^login$',
     #    login,
     #    {

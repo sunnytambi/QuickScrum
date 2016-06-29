@@ -3,8 +3,11 @@
 {% block content %}
 {% load static %}
 
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/jquery-ui.min.css' %}" />
 <!-- Custom styles for this template -->
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/status.css' %}" />
+
+<script src="{% static 'app/scripts/jquery-ui.min.js' %}"></script>
 
 {% if messages %}
 <ul class="messages">
@@ -14,39 +17,58 @@
 </ul>
 {% endif %}
 
+<!--<h1 class="ui-widget-header">Jira Issues Assigned to you</h1>
+<ul class="row list-unstyled" id="draggablePanelList">-->
+{#{% for item in issue_list %}#}
+<!--    <li class="col-xs-2 ui-state-default ui-corner-all" data-issueid="{{item.key}}">{{item.fields.summary}}</li>-->
+{#{% endfor %}#}
+<!--</ul>-->
+
 <form class="form-generic" action="." method="post">
 	{% csrf_token %}
 
     <div class="row">
-        <div class="yesterday col-md-4">
+        <div class="yesterday col-md-3">
 	        <h3>What did you do <u>Yesterday</u></h3>
 	        <div class="statuses">
-                {#<input type="text" placeholder="Yesterday's status" class='form-control' required />#}
-                {% include "app/partials/statustextboxpartial.html" with placeholder="Yesterday&#39;s Status" name="yesterday" %}
+                {% include "app/partials/statustextboxpartial.html" with placeholder="Yesterday&#39;s Status" name="yesterday" identifier="1" %}
             </div>
             <br />
             <button type="button" class="btn btn-default btn-add-more" data-container="Yesterday&#39;s status" data-name="yesterday">+</button>
         </div>
-        <div class="today col-md-4">
+
+        <div class="today col-md-3">
 	        <h3>What are you doing <u>Today</u></h3>
             <div class="statuses">
-                {% include "app/partials/statustextboxpartial.html" with placeholder="Today&#39;s Status" name="today" %}
-	            {#<input type="text" placeholder="Today's status" class='form-control' required />#}
+                {% include "app/partials/statustextboxpartial.html" with placeholder="Today&#39;s Status" name="today" identifier="1" %}
             </div>
             <br />
             <button type="button" class="btn btn-default btn-add-more" data-container="Today&#39;s status" data-name="today">+</button>
         </div>
-        <div class="issues col-md-4">
+
+        <div class="issues col-md-3">
 	        <h3>Are you facing any <u>Issues</u>?</h3>
             <div class="statuses">
-                {% include "app/partials/statustextboxpartial.html" with placeholder="Issue" name="issue" %}
-                {#<input type="text" placeholder="Issues" class='form-control' required />#}
+                {% include "app/partials/statustextboxpartial.html" with placeholder="Issue" name="issue" identifier="1" showDroppables=issue_list is not None %}
             </div>
             <br />
             <button type="button" class="btn btn-default btn-add-more" data-container="Issues" data-name="issue">+</button>
         </div>
+        
+        {% if issue_list %}
+        <div class='panel panel-info col-md-3'>
+            <h3>Jira Issues Assigned to you</h3>
+            <ul class='list-group' id="draggablePanelList">
+                {% for item in issue_list %}
+                <li class='list-group-item' data-issueid="{{item.key}}">{{item.fields.summary}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
 	</div>
     <br /><br />
+
 	<center><button class="btn btn-lg btn-primary" type="submit">Submit</button></center>
 
 	{% if form.errors %}
@@ -61,15 +83,34 @@
 
     <script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
     <script>
+        var global_identifier = 1;
         var statustemplate = "{% spaceless %} {% include 'app/partials/statustextboxpartial.html' with placeholder='' name='' %} {% endspaceless %}";
         $(".btn-add-more").click(function(){
+            global_identifier ++;
             var container = $(this).data( "container" );
             var name = $(this).data( "name" );
             var sib = $(this).siblings(".statuses").append(statustemplate);
-            var textarea = sib.children(":last-child").children("textarea");
+            var textarea = sib.children(":last-child").children('.panel-body').children("textarea");
             textarea.attr("placeholder", container);
-            textarea.attr("name", name);
+            textarea.attr("name", name+"_"+global_identifier);
+
+            var ul = sib.children(":last-child").children('.panel-info').children("ul");
+            ul.attr("data-identifier", global_identifier);
+            var ulClasses = ul.attr('class').split(' ');
+            var updatedUlClasses = [];
+            for(var i=0; i<ulClasses.length; i++)
+            {
+                if(ulClasses[i].indexOf('jira_issue_container_for_') == -1)
+                {
+                    updatedUlClasses.push(ulClasses[i]);
+                }
+            }
+            ul.removeClass(); // Remove all the existing classes
+            ul.addClass(updatedUlClasses.join(' '));
+            //ul.removeClass('jira_issue_container_for_');
+            ul.addClass('jira_issue_container_for_'+name+"_"+global_identifier);
             registerDeleteHandler();
+            registerDroppable();
         });
 
         function registerDeleteHandler()
@@ -82,10 +123,94 @@
                 var numChildren = rootDiv.children().length;
                 if(numChildren > 1)
                 {
-                    $(this).parents(".input-group").remove();
+                    var currentDiv = $(this).parents(".panel-primary");
+                    var attachedIssues = currentDiv.children('panel-info ul li');
+                    for(var i =0; i < attachedIssues.length; i++)
+                    {
+                        var gridLi = $("<li class='col-xs-2 ui-state-default ui-corner-all' data-issueid=''></li>");
+                        gridLi.text(attachedIssues[i].text());
+                        gridLi.data("issueid", attachedIssues[i].data("issueid"));
+                        $("#draggablePanelList").append(gridLi);
+                    }
+                    $(this).parents(".panel-primary").remove();
                 }
             });
         }
+
+        function registerDroppable()
+        {
+            try
+            {
+                $(".panel-info ul").droppable( "destroy" );
+            }
+            catch(err)
+            {
+                // ignore
+            }
+
+            $(".panel-info ul").droppable({
+                activeClass: "ui-state-default",
+                hoverClass: "ui-state-hover",
+                accept: ":not(.ui-sortable-helper)",
+                drop: function( event, ui ) {
+                    var liName = '';
+                    var thisClass = $( this ).attr('class');
+                    // Check if class name starts with ...
+                    if(thisClass.indexOf("jira_issue_container_for_yesterday") != -1)
+                    {
+                        // Dropped in Yesterday's Status
+                        liName = "jira_issue_for_yesterday";
+                    }
+                    else if(thisClass.indexOf("jira_issue_container_for_today") != -1)
+                    {
+                        // Dropped in Yesterday's Status
+                        liName = "jira_issue_for_today";
+                    }
+                    else if(thisClass.indexOf("jira_issue_container_for_issue") != -1)
+                    {
+                        // Dropped in Yesterday's Status
+                        liName = "jira_issue_for_issue";
+                    }
+                    
+                    var hiddentemplate = "<input type='hidden' name='' value='' />";
+                    var identifier = $(this).data( "identifier" );
+                    liName += "_" + identifier;
+                    $( this ).find( ".placeholder" ).remove();
+                    $( "<li class='list-group-item'></li>" )
+                        .text( ui.draggable.text() )
+                        .appendTo( this )
+                        //.attr('name',liName)
+                        .attr('data-issueid', ui.draggable.data('issueid'));
+                    
+                    $( hiddentemplate )
+                        .attr('name',liName)
+                        .appendTo( this )
+                        .attr('value', '['+ui.draggable.data('issueid')+']'+ui.draggable.text());
+
+                    ui.draggable.remove();
+                }
+            });
+        }
+
+        jQuery(function($) {
+            var panelList = $('#draggablePanelList');
+
+            $( "#draggablePanelList li" ).draggable({
+                appendTo: "body",
+                helper: "original",
+                scroll: true,
+                //grid:[30,20],
+                
+                //cursorAt: { left: 5 },
+                cursor: "move",
+                //snap: true,
+                stack: ".panel-primary",
+                zIndex: 100,
+                revert: 'invalid'
+            });
+
+            registerDroppable();
+        });
     </script>
 
 {% endblock %}

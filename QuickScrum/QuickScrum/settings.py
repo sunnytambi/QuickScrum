@@ -7,6 +7,10 @@ PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 DEBUG = True
 
+JIRA = {
+    'site_url':'https://twiinlabs.atlassian.net'
+}
+
 ALLOWED_HOSTS = (
     'localhost',
 )
@@ -27,6 +31,18 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+CACHES = {
+    'default': {
+        #'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        #'LOCATION': '127.0.0.1:11211',
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+#CACHE_MIDDLEWARE_ALIAS = 'unique-snowflake'
+CACHE_MIDDLEWARE_SECONDS = 1000
+CACHE_MIDDLEWARE_KEY_PREFIX = 'site1'
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/status/'
@@ -88,13 +104,15 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'n(bd1f1c%e8=_xad02x5qtfn%wgwpi492e$8_erx+d)!tpeoim'
 
 #SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_HTTPONLY = True
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
@@ -103,7 +121,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 )
 
 ROOT_URLCONF = 'QuickScrum.urls'
@@ -116,7 +136,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [path.join(PROJECT_ROOT, 'templates')],
         #'APP_DIRS': True,
-        
+
         'OPTIONS': {
             'debug': True,
             'context_processors': [
@@ -125,7 +145,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            
+
             # List of callables that know how to import templates from various sources.
             'loaders' : [
                 'django.template.loaders.filesystem.Loader',

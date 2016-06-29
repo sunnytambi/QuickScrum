@@ -1,6 +1,19 @@
-﻿<div class='input-group'>
-    <textarea placeholder='{{placeholder}}' class='form-control' required name='{{name}}'></textarea>
-    <span class='input-group-btn'>
-        <button class='btn btn-danger btn-delete' type='button'>X</button>
-    </span>
-</div><!-- /input-group -->
+﻿<div class='panel panel-primary'>
+    <!-- Default panel contents -->
+    <div class='panel-heading'>
+        <button class='btn-xs btn-danger btn-delete' type='button'>X</button>
+    </div>
+    <div class='panel-body'>
+        <textarea placeholder='{{placeholder}}' class='form-control' required name='{{name}}_{{identifier}}'></textarea>
+    </div>
+
+    {% if showDroppables %}
+    <!-- List group inner panel -->
+    <div class='panel panel-info inner-panel'>
+        <div class='panel-heading'>Tasks/Bugs attached to this status</div>
+        <ul class='list-group jira_issue_container_for_{{name}}_{{identifier}}' data-identifier='{{identifier}}'>
+            <li class='list-group-item placeholder' data-issueid='-1'>Attach your tasks/bugs here</li>
+        </ul>
+    </div>
+    {% endif %}
+</div>

@@ -3,7 +3,7 @@
 {% block content %}
 {% load static %}
 
-<h2>Status Submitted on 03/03/2016</h2>
+<h2>{{title}}</h2>
 <div class="row">
     <div class="yesterday col-md-4">
 	    <h3>What did you do <u>Yesterday</u></h3>
@@ -11,6 +11,14 @@
             {% for y in yesterday_list %}
             <li>
                 {{y.status_text}}
+
+                {% if y.get_issues_beneath %}
+                <ul>
+                    {% for issue in y.get_issues_beneath %}
+                    <li><a href="{{jira_site_url}}/browse/{{issue.jira_issue_id}}" target="_blank">[{{issue.jira_issue_id}}] {{issue.jira_issue_text}}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </li>
             {% endfor %}
         </ol>
@@ -21,6 +29,14 @@
             {% for t in today_list %}
             <li>
                 {{t.status_text}}
+
+                {% if t.get_issues_beneath %}
+                <ul>
+                    {% for issue in t.get_issues_beneath %}
+                    <li><a href="{{jira_site_url}}/browse/{{issue.jira_issue_id}}" target="_blank">[{{issue.jira_issue_id}}] {{issue.jira_issue_text}}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </li>
             {% endfor %}
         </ol>
@@ -31,6 +47,14 @@
             {% for i in issue_list %}
             <li>
                 {{i.status_text}}
+
+                {% if i.get_issues_beneath %}
+                <ul>
+                    {% for issue in i.get_issues_beneath %}
+                    <li><a href="{{jira_site_url}}/browse/{{issue.jira_issue_id}}" target="_blank">[{{issue.jira_issue_id}}] {{issue.jira_issue_text}}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </li>
             {% endfor %}
         </ol>
