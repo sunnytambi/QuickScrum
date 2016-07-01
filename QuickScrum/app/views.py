@@ -205,6 +205,7 @@ def status_view(request):
                           'year':now().year,
                           'form':form,
                           'issue_list':issue_list,
+                          'show_droppables':issue_list is not None,
                       })
 
 #@login_required

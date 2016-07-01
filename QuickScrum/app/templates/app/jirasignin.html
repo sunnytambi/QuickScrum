@@ -15,9 +15,9 @@
     </h2>
     
     {% if form.errors %}
-    <ul class="validation-summary-errors">
+    <ul class="messages">
     {% for err in form.non_field_errors %}
-        <li>{{err}}</li>
+        <li class="error">{{err}}</li>
     {% endfor %}
 	</ul>
 	{% endif %}
@@ -39,6 +39,8 @@
 		</label>
 	</div>-->
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+    {% include 'app/partials/loadingpartial.html' %}
 </form>
 
 {% endblock %}
@@ -47,5 +49,10 @@
 {% block scripts %}
 
     <script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+<script>
+    $('form').submit(function (event) {
+        $(".restrictive-modal").show();
+    });
+</script>
 
 {% endblock %}

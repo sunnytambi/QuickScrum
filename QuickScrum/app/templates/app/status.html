@@ -49,7 +49,7 @@
         <div class="issues col-md-3">
 	        <h3>Are you facing any <u>Issues</u>?</h3>
             <div class="statuses">
-                {% include "app/partials/statustextboxpartial.html" with placeholder="Issue" name="issue" identifier="1" showDroppables=issue_list is not None %}
+                {% include "app/partials/statustextboxpartial.html" with placeholder="Issue" name="issue" identifier="1" show_droppables=show_droppables %}
             </div>
             <br />
             <button type="button" class="btn btn-default btn-add-more" data-container="Issues" data-name="issue">+</button>
@@ -74,6 +74,8 @@
 	{% if form.errors %}
 	<p class="validation-summary-errors">Please enter correct statuses.</p>
 	{% endif %}
+
+    {% include 'app/partials/loadingpartial.html' %}
 </form>
 
 {% endblock %}
@@ -211,6 +213,11 @@
 
             registerDroppable();
         });
+        
+        $('form').submit(function (event) {
+            $(".restrictive-modal").show();
+        });
+
     </script>
 
 {% endblock %}

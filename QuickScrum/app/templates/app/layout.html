@@ -14,6 +14,7 @@
     {% load staticfiles %}
 	<link rel="icon" href="{% static 'app/content/images/favicon.ico' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap-theme.min.css' %}" />
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<link rel="stylesheet" type="text/css" href="{% static 'app/content/ie10-viewport-bug-workaround.css' %}">
@@ -23,6 +24,7 @@
     <script src="{% static 'app/scripts/jquery-1.11.3.min.js' %}"></script>
     <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
     <script src="{% static 'app/scripts/respond.min.js' %}"></script>
+    <script src="{% static 'app/scripts/jquery.toaster.js' %}"></script>
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static 'app/scripts/ie10-viewport-bug-workaround.js' %}"></script>
@@ -82,6 +84,28 @@
         else {
             $("li[name='status']").addClass("active");
         }
+
+        // Show toast messages
+        function showToast() {
+            var priority = '';
+            var title = '';
+            var message = '';
+            if ($(".messages").length > 0){
+                if ($(".messages .success").length > 0) {
+                    priority = 'success';
+                    title = 'Success';
+                    message = $(".messages .success").text();
+                }
+                else if ($(".messages .error").length > 0) {
+                    priority = 'danger';
+                    title = 'Error';
+                    message = $(".messages .error").text();
+                }
+                $.toaster({ priority: priority, title: title, message: message, settings: { 'timeout': 3500, 'donotdismiss': 'danger' } });
+            }
+
+        }
+        showToast();
     </script>
 {% block scripts %}{% endblock %}
 

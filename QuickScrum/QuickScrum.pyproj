@@ -74,6 +74,7 @@
     <Content Include="app\static\app\content\images\favicon.ico" />
     <Content Include="app\static\app\content\ie10-viewport-bug-workaround.css" />
     <Content Include="app\static\app\content\images\icon-jira.png" />
+    <Content Include="app\static\app\content\images\loading.gif" />
     <Content Include="app\static\app\content\images\ui-bg_glass_100_f6f6f6_1x400.png" />
     <Content Include="app\static\app\content\images\ui-bg_glass_100_fdf5ce_1x400.png" />
     <Content Include="app\static\app\content\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
@@ -85,9 +86,11 @@
     <Content Include="app\static\app\scripts\ie10-viewport-bug-workaround.js" />
     <Content Include="app\static\app\scripts\jquery-1.11.3.js" />
     <Content Include="app\static\app\scripts\jquery-1.11.3.min.js" />
+    <Content Include="app\static\app\scripts\jquery.toaster.js" />
     <Content Include="app\static\app\scripts\npm.js" />
     <Content Include="app\templates\app\dashboard.html" />
     <Content Include="app\templates\app\jirasignin.html" />
+    <Content Include="app\templates\app\partials\loadingpartial.html" />
     <Content Include="app\templates\app\partials\statustextboxpartial.html" />
     <Content Include="app\templates\app\readstatus.html" />
     <Content Include="app\templates\app\Signin.html" />
