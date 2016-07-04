@@ -6,11 +6,11 @@
 <!-- Custom styles for this template -->
 <link rel="stylesheet" type="text/css" href="{% static 'app/content/signin.css' %}" />
 
-<form class="form-signin form-generic" action="{% url 'login' %}" method="post">
+<form class="form-signin form-generic well" action="{% url 'login' %}" method="post">
 	{% csrf_token %}
 
 	<h2 class="form-signin-heading">
-        <img src="{% static 'app/content/images/favicon.ico' %}" />
+        <img src="{% static 'app/content/images/favicon.ico' %}" width="44" />
         Please sign in
     </h2>
     
@@ -22,7 +22,7 @@
 	</ul>
 	{% endif %}
 
-	<label for="id_username" class="sr-only">Username</label>
+	<label for="id_username" class="sr-only">Username (email)</label>
 	{{ form.username }}
 	<label for="id_password" class="sr-only">Password</label>
 	{{ form.password }}
@@ -34,7 +34,11 @@
 			<input type="checkbox" id="rememberMe" value="remember-me"> Remember me
 		</label>
 	</div>-->
-	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+	
+    <!--<div class="row">-->
+        <button class="btn btn-primary" type="submit">Sign in</button>
+        <a href="{% url 'password_reset' %}" style="float:right">Forgot password?</a>
+    <!--</div>-->
 
     {% include 'app/partials/loadingpartial.html' %}
 </form>

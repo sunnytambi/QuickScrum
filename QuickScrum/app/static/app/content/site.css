@@ -56,7 +56,7 @@ input[type="checkbox"].input-validation-error {
 .form-generic .form-control:focus {
   z-index: 2;
 }
-.form-signin
+.form-generic
 {
     position:relative;
 }

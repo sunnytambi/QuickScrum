@@ -2,13 +2,25 @@
 <form id="logoutForm" action="{% url 'logout' %}" method="post" style="display:inline-block">
     {% csrf_token %}
     <ul class="nav nav-pills pull-right">
-        <li role="presentation"><span class="navbar-brand" style="padding:10px 15px;">Hello {{ user.username }}!</span></li>
+        <!--<li role="presentation"><span class="navbar-brand" style="padding:10px 15px;">Hello {{ user.first_name }} {{user.last_name}} !</span></li>
         <li role="presentation"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        <li role="presentation" name="password_change"><a href="{% url 'password_change' %}">Change Password</a></li>-->
+
+        <li role="presentation">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Hello {{ user.first_name }} {{user.last_name}} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="{% url 'password_change' %}">Change Password</a></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            </ul>
+        </li>
     </ul>
 </form>
 
 {% else %}
 
 <li role="presentation" name="login"><a href="{% url 'login' %}">Sign in</a></li>
+<li role="presentation" name="register"><a href="{% url 'register' %}">Register</a></li>
 
 {% endif %}

@@ -9,14 +9,6 @@
 
 <script src="{% static 'app/scripts/jquery-ui.min.js' %}"></script>
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
 <!--<h1 class="ui-widget-header">Jira Issues Assigned to you</h1>
 <ul class="row list-unstyled" id="draggablePanelList">-->
 {#{% for item in issue_list %}#}

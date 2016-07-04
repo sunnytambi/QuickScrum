@@ -37,27 +37,33 @@
 </head>
 
 <body>
-    {#<div class="navbar navbar-inverse navbar-fixed-top">#}
-        <div class="container-fluid">
-            <div class="header clearfix">
-                <nav>
-                  <ul class="nav nav-pills pull-right">
-                    <li role="presentation" class="active" name="status"><a href="{% url 'status' %}">Status</a></li>
-                    <li role="presentation" name="dashboard"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                      {% include 'app/partials/loginpartial.html' %}
-                  </ul>
-                </nav>
-                <h3 class="text-muted">
-                    <img src="{% static 'app/content/images/favicon.ico' %}" />
-                    Quick Scrum
-                </h3>
+    <div class="container-fluid">
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                <li role="presentation" class="active" name="status"><a href="{% url 'status' %}">Status</a></li>
+                <li role="presentation" name="dashboard"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    {% include 'app/partials/loginpartial.html' %}
+                </ul>
+            </nav>
+            <h3 class="text-muted">
+                <img src="{% static 'app/content/images/favicon.ico' %}" />
+                Quick Scrum
+            </h3>
                 
-            </div>
         </div>
-    {#</div>#}
+    </div>
 
     <div class="container-fluid body-content">
-{% block content %}{% endblock %}
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% block content %}{% endblock %}
         <hr/>
         <footer>
             <p>&copy; {{ year }} - Quick Scrum</p>
@@ -80,6 +86,12 @@
         }
         else if (window.location.pathname.indexOf('dashboard') != -1) {
             $("li[name='dashboard']").addClass("active");
+        }
+        else if (window.location.pathname.indexOf('register') != -1) {
+            $("li[name='register']").addClass("active");
+        }
+        else if (window.location.pathname.indexOf('password_change') != -1) {
+            $("li[name='password_change']").addClass("active");
         }
         else {
             $("li[name='status']").addClass("active");

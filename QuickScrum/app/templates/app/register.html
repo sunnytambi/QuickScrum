@@ -1,0 +1,52 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<!-- Custom styles for this template -->
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/register.css' %}" />
+
+<form class="form-register form-generic well" action="{% url 'register' %}" method="post">
+	{% csrf_token %}
+	<h2 class="form-register-heading">
+        <img src="{% static 'app/content/images/favicon.ico' %}" width="44" />
+        Register
+    </h2>
+
+    {% if form.errors %}
+    <ul class="messages">
+    {% for err in form.non_field_errors %}
+        <li class="error">{{err}}</li>
+    {% endfor %}
+	</ul>
+	{% endif %}
+
+    <label for="id_username" class="sr-only">Username (email)</label>
+	{{ form.username }}
+    <label for="id_fname" class="sr-only">First Name</label>
+	{{ form.fname }}
+    <label for="id_lname" class="sr-only">Last Name</label>
+	{{ form.lname }}
+	<label for="id_password" class="sr-only">Password</label>
+	{{ form.password }}
+    <label for="id_passwordConfirm" class="sr-only">Password (confirm)</label>
+	{{ form.passwordConfirm }}
+
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+
+    {% include 'app/partials/loadingpartial.html' %}
+</form>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+    <script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+    <script>
+        $('form').submit(function (event) {
+            $(".restrictive-modal").show();
+        });
+    </script>
+
+{% endblock %}

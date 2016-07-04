@@ -80,6 +80,8 @@
     <Content Include="app\static\app\content\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
     <Content Include="app\static\app\content\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
     <Content Include="app\static\app\content\jumbotron-narrow.css" />
+    <Content Include="app\static\app\content\changepassword.css" />
+    <Content Include="app\static\app\content\register.css" />
     <Content Include="app\static\app\content\signin.css" />
     <Content Include="app\static\app\content\status.css" />
     <Content Include="app\static\app\fonts\glyphicons-halflings-regular.woff2" />
@@ -92,7 +94,9 @@
     <Content Include="app\templates\app\jirasignin.html" />
     <Content Include="app\templates\app\partials\loadingpartial.html" />
     <Content Include="app\templates\app\partials\statustextboxpartial.html" />
+    <Content Include="app\templates\app\passwordchange.html" />
     <Content Include="app\templates\app\readstatus.html" />
+    <Content Include="app\templates\app\register.html" />
     <Content Include="app\templates\app\Signin.html" />
     <Content Include="app\templates\app\status.html" />
     <Content Include="requirements.txt" />
