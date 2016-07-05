@@ -187,7 +187,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'C:/Users/sunnyt/OneDrive - Talentica Software (I) Pvt. Ltd/Documents/Projects/QuickScrum/QuickScrum/logs/debug.log',
+            'filename': 'logs/debug.log',
         },
         'mail_admins': {
             'level': 'ERROR',

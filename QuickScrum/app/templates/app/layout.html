@@ -18,8 +18,8 @@
 
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<link rel="stylesheet" type="text/css" href="{% static 'app/content/ie10-viewport-bug-workaround.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/jumbotron-narrow.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
     <script src="{% static 'app/scripts/jquery-1.11.3.min.js' %}"></script>
     <script src="{% static 'app/scripts/bootstrap.min.js' %}"></script>
@@ -41,8 +41,16 @@
         <div class="header clearfix">
             <nav>
                 <ul class="nav nav-pills pull-right">
-                <li role="presentation" class="active" name="status"><a href="{% url 'status' %}">Status</a></li>
-                <li role="presentation" name="dashboard"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                <li role="presentation" class="active" name="status">
+                    <a href="{% url 'status' %}">
+                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>  Status
+                    </a>
+                </li>
+                <li role="presentation" name="dashboard">
+                    <a href="{% url 'dashboard' %}">
+                        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>  Dashboard
+                    </a>
+                </li>
                     {% include 'app/partials/loginpartial.html' %}
                 </ul>
             </nav>
@@ -113,7 +121,7 @@
                     title = 'Error';
                     message = $(".messages .error").text();
                 }
-                $.toaster({ priority: priority, title: title, message: message, settings: { 'timeout': 3500, 'donotdismiss': 'danger' } });
+                $.toaster({ priority: priority, title: title, message: message, settings: { 'timeout': 5000, 'donotdismiss': 'danger' } });
             }
 
         }

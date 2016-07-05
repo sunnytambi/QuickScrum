@@ -17,6 +17,7 @@ from app.forms import StatusForm, BootstrapAuthenticationForm, BootstrapRegister
 from app.models import YesterdayStatus, TodayStatus, IssueStatus, Status, Status_JiraIssue
 import app.jira.JiraIntegration
 from QuickScrum import settings
+from django.http.response import HttpResponseRedirect
 
 @csrf_protect
 def login_view(request, template_name, authentication_form, extra_context):
@@ -29,7 +30,7 @@ def login_view(request, template_name, authentication_form, extra_context):
                 login(request, user)
 
                 # User login successful
-                messages.success(request, 'Successfully Logged in to Quick Scrum')
+                messages.success(request, 'Logged in to Quick Scrum')
                 form = StatusForm(auto_id=False)
                 nexturl = settings.LOGIN_REDIRECT_URL
                 if request.GET.get('next', False):
@@ -76,7 +77,7 @@ def jiralogin_view(request, template_name, authentication_form, extra_context):
         jira_instance = app.jira.JiraIntegration.JiraIntegration()
         signin_success = jira_instance.signIn(settings.JIRA['site_url'], username, password)
         if signin_success: # Jira login successful, given credentials are correct
-            messages.success(request, 'Successfully Logged in to Jira')
+            #messages.success(request, 'Logged in to Jira')
             request.session['jira_username'] = username
             request.session['jira_password'] = password
             #request.session['jiraurl'] = jiraurl
@@ -174,7 +175,7 @@ def password_change_view(request, template_name, password_change_form, extra_con
             if newPassword == newPasswordConfirm: # New passwords match
                 request.user.set_password(newPassword)
                 request.user.save()
-                messages.success(request, 'Password changed successfully. Please login again.')
+                messages.success(request, 'Password changed. Please login again.')
                 logout(request)
 
                 # Logout success, Redirect to login
@@ -207,90 +208,77 @@ def status_view(request):
     issue_list = None
 
     if request.method == 'POST':
-        if form.is_valid():
-            s = Status()
-            s.timestamp = now()
-            s.submitter = request.user
-            s.save()
+        s = Status()
+        s.timestamp = now()
+        s.submitter = request.user
+        s.save()
 
-            for key in list(request.POST.keys()):
-                form_values = request.POST.getlist(key)
-                modl = None
+        for key in list(request.POST.keys()):
+            form_values = request.POST.getlist(key)
+            modl = None
 
-                if re.compile('csrfmiddlewaretoken').match(key):
-                    # ignore
-                    continue
+            if re.compile('csrfmiddlewaretoken').match(key):
+                # ignore
+                continue
 
-                elif re.compile('yesterday_\d').match(key):
-                    modl = YesterdayStatus()
-                    for text in form_values:
-                        modl.status_text = text
-                        modl.status = s
-                        modl.save()
+            elif re.compile('yesterday_\d').match(key):
+                modl = YesterdayStatus()
+                for text in form_values:
+                    modl.status_text = text
+                    modl.status = s
+                    modl.save()
 
-                    jira_issues_list = request.POST.getlist('jira_issue_for_'+key)
+                jira_issues_list = request.POST.getlist('jira_issue_for_'+key)
 
-                    for status_issue_value in jira_issues_list:
-                        saveStatus_JiraIssue('Yesterday', s, status_issue_value, modl.id)
-                        #s_ji = Status_JiraIssue()
-                        #s_ji.status_type = 'Yesterday'
-                        #s_ji.status = s
-                        #s_ji.jira_issue_id = status_issue_value.split(']')[0][1:]
-                        #s_ji.jira_issue_text = status_issue_value.split(']')[1]
-                        #s_ji.status_particulars_id = modl.id
-                        #s_ji.save()
+                for status_issue_value in jira_issues_list:
+                    saveStatus_JiraIssue('Yesterday', s, status_issue_value, modl.id)
 
-                elif re.compile('today_\d').match(key):
-                    modl = TodayStatus()
-                    for text in form_values:
-                        modl.status_text = text
-                        modl.status = s
-                        modl.save()
+            elif re.compile('today_\d').match(key):
+                modl = TodayStatus()
+                for text in form_values:
+                    modl.status_text = text
+                    modl.status = s
+                    modl.save()
 
-                    jira_issues_list = request.POST.getlist('jira_issue_for_'+key)
+                jira_issues_list = request.POST.getlist('jira_issue_for_'+key)
 
-                    for status_issue_value in jira_issues_list:
-                        saveStatus_JiraIssue('Today', s, status_issue_value, modl.id)
-                        #s_ji = Status_JiraIssue()
-                        #s_ji.status_type = 'Today'
-                        #s_ji.status = s
-                        #s_ji.jira_issue_id = status_issue_value.split(']')[0][1:]
-                        #s_ji.jira_issue_text = status_issue_value.split(']')[1]
-                        #s_ji.status_particulars_id = modl.id
-                        #s_ji.save()
+                for status_issue_value in jira_issues_list:
+                    saveStatus_JiraIssue('Today', s, status_issue_value, modl.id)
 
-                elif re.compile('issue_\d').match(key):
-                    modl = IssueStatus()
-                    for text in form_values:
-                        modl.status_text = text
-                        modl.status = s
-                        modl.save()
+            elif re.compile('issue_\d').match(key):
+                modl = IssueStatus()
+                for text in form_values:
+                    modl.status_text = text
+                    modl.status = s
+                    modl.save()
 
-                    jira_issues_list = request.POST.getlist('jira_issue_for_'+key)
+                jira_issues_list = request.POST.getlist('jira_issue_for_'+key)
 
-                    for status_issue_value in jira_issues_list:
-                        saveStatus_JiraIssue('Issue', s, status_issue_value, modl.id)
-                        #s_ji = Status_JiraIssue()
-                        #s_ji.status_type = 'Issue'
-                        #s_ji.status = s
-                        #s_ji.jira_issue_id = status_issue_value.split(']')[0][1:]
-                        #s_ji.jira_issue_text = status_issue_value.split(']')[1]
-                        #s_ji.status_particulars_id = modl.id
-                        #s_ji.save()
+                for status_issue_value in jira_issues_list:
+                    saveStatus_JiraIssue('Issue', s, status_issue_value, modl.id)
 
-            messages.success(request, 'Statuses submitted successfully')
+        messages.success(request, 'Statuses submitted.')
+
+        issue_list = getJiraIssueList(request)
+            
+        if isinstance(issue_list, HttpResponseRedirect): # if there is no jira login
+            return issue_list
+
+        return render(request, "app/status.html",
+                      {
+                          'title':'Log your Status',
+                          'year':now().year,
+                          'form':form,
+                          'issue_list':issue_list,
+                          'show_droppables':issue_list is not None,
+                      })
     else:
-        if hasattr(settings, 'JIRA'):
-            jira_credentials = request.session.get('jira_username', None)
-            if jira_credentials is None:
-                return redirect('/jiralogin')
-            else:
-                jira_instance = app.jira.JiraIntegration.JiraIntegration()
-                jira_instance.signIn(settings.JIRA['site_url'], 
-                                     request.session['jira_username'], 
-                                     request.session['jira_password'])
-                issue_list = jira_instance.getOpenIssues()
-                jira_instance.signOut()
+        issue_list = getJiraIssueList(request)
+            
+        if isinstance(issue_list, HttpResponseRedirect): # if there is no jira login
+            return issue_list
+
+        messages.success(request, 'Fetched details from Jira')
 
         return render(request, "app/status.html",
                       {
@@ -347,3 +335,19 @@ def saveStatus_JiraIssue(status_type, status, status_issue_value, status_particu
     s_ji.jira_issue_text = status_issue_value.split(']')[1]
     s_ji.status_particulars_id = status_particulars_id
     s_ji.save()
+
+def getJiraIssueList(request):
+    if hasattr(settings, 'JIRA'):
+        jira_credentials = request.session.get('jira_username', None)
+        if jira_credentials is None:
+            return redirect('/jiralogin')
+        else:
+            jira_instance = app.jira.JiraIntegration.JiraIntegration()
+            jira_instance.signIn(settings.JIRA['site_url'], 
+                                    request.session['jira_username'], 
+                                    request.session['jira_password'])
+            issue_list = jira_instance.getOpenIssues()
+            jira_instance.signOut()
+            return issue_list
+    else:
+        return None

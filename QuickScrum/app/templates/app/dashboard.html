@@ -19,7 +19,11 @@
             <tr>
                 <td>{{idx}}</td>
                 <td>{{item.timestamp}}</td>
-                <td><a href="{% url 'readstatus' status_id=item.id %}">Status Link</a></td>
+                <td>
+                    <a href="{% url 'readstatus' status_id=item.id %}">
+                        <span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+                    </a>
+                </td>
             </tr>
             {% endfor %}
 

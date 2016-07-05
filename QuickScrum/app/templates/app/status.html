@@ -21,7 +21,7 @@
 
     <div class="row">
         <div class="yesterday col-md-3">
-	        <h3>What did you do <u>Yesterday</u></h3>
+	        <h3 class="text-center">What did you do <u>Yesterday</u></h3>
 	        <div class="statuses">
                 {% include "app/partials/statustextboxpartial.html" with placeholder="Yesterday&#39;s Status" name="yesterday" identifier="1" %}
             </div>
@@ -30,7 +30,7 @@
         </div>
 
         <div class="today col-md-3">
-	        <h3>What are you doing <u>Today</u></h3>
+	        <h3 class="text-center">What are you doing <u>Today</u></h3>
             <div class="statuses">
                 {% include "app/partials/statustextboxpartial.html" with placeholder="Today&#39;s Status" name="today" identifier="1" %}
             </div>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="issues col-md-3">
-	        <h3>Are you facing any <u>Issues</u>?</h3>
+	        <h3 class="text-center">Are you facing any <u>Issues</u></h3>
             <div class="statuses">
                 {% include "app/partials/statustextboxpartial.html" with placeholder="Issue" name="issue" identifier="1" show_droppables=show_droppables %}
             </div>
@@ -49,7 +49,7 @@
         
         {% if issue_list %}
         <div class='panel panel-info col-md-3'>
-            <h3>Jira Issues Assigned to you</h3>
+            <h3 class="text-center">Jira Issues Assigned to you</h3>
             <ul class='list-group' id="draggablePanelList">
                 {% for item in issue_list %}
                 <li class='list-group-item' data-issueid="{{item.key}}">{{item.fields.summary}}</li>
@@ -63,9 +63,9 @@
 
 	<center><button class="btn btn-lg btn-primary" type="submit">Submit</button></center>
 
-	{% if form.errors %}
+	<!--{% if form.errors %}
 	<p class="validation-summary-errors">Please enter correct statuses.</p>
-	{% endif %}
+	{% endif %}-->
 
     {% include 'app/partials/loadingpartial.html' %}
 </form>
@@ -105,6 +105,7 @@
             ul.addClass('jira_issue_container_for_'+name+"_"+global_identifier);
             registerDeleteHandler();
             registerDroppable();
+            updateTabIndices();
         });
 
         function registerDeleteHandler()
@@ -128,6 +129,8 @@
                     }
                     $(this).parents(".panel-primary").remove();
                 }
+
+                updateTabIndices();
             });
         }
 
@@ -186,6 +189,11 @@
             });
         }
 
+        function updateTabIndices()
+        {
+            $("textarea").each(function (i) { $(this).attr('tabindex', i + 1); });
+        }
+
         jQuery(function($) {
             var panelList = $('#draggablePanelList');
 
@@ -204,10 +212,7 @@
             });
 
             registerDroppable();
-        });
-        
-        $('form').submit(function (event) {
-            $(".restrictive-modal").show();
+            updateTabIndices();
         });
 
     </script>
