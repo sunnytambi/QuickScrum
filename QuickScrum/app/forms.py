@@ -11,6 +11,7 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                widget=forms.TextInput({
                                    'class': 'form-control',
                                    'autofocus': '',
+                                   'type': 'email',
                                    'required': '',
                                    'placeholder': 'Username (email)'}))
     password = forms.CharField(widget=forms.PasswordInput({
