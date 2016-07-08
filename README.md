@@ -8,3 +8,4 @@ Simple web application to keep track of your daily status reports and update the
 4. Web hosting
 5. Ability to create and join Team/Organization
 6. Manager View (Shows Statuses of Team)
+7. Allow more than 5 Jira issues to be populated.
