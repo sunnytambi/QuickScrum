@@ -24,9 +24,11 @@
 {
     display:none;
 }
-.inner-panel .list-group .list-group-item
+.inner-panel ul.list-group li.placeholder
 {
     font-style:italic;
+    font-size:12px;
+    text-align:center;
 }
 .panel-body
 {
@@ -46,7 +48,7 @@
     height:28px;
 }
 
-#draggablePanelList li
+.ui-draggable
 {
     cursor:move;
 }

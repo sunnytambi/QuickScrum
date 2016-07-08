@@ -1,4 +1,4 @@
-﻿<div class='panel panel-primary'>
+<div class='panel panel-primary panel-status'>
     <!-- Default panel contents -->
     <div class='panel-heading'>
         <button class='btn-xs btn-danger btn-delete' type='button'>X</button>
@@ -9,10 +9,10 @@
 
     {% if show_droppables %}
     <!-- List group inner panel -->
-    <div class='panel panel-info inner-panel'>
+    <div class='panel panel-info inner-panel panel-status-issues'>
         <div class='panel-heading'>Tasks/Bugs attached to this status</div>
         <ul class='list-group jira_issue_container_for_{{name}}_{{identifier}}' data-identifier='{{identifier}}'>
-            <li class='list-group-item placeholder' data-issueid='-1'>Attach your tasks/bugs here</li>
+            <li class='list-group-item placeholder' data-issueid='-1'>--Attach your tasks/bugs here--</li>
         </ul>
     </div>
     {% endif %}

@@ -21,41 +21,40 @@
 
     <div class="row">
         <div class="yesterday col-md-3">
-	        <h3 class="text-center">What did you do <u>Yesterday</u></h3>
+	        <h4 class="text-center">What did you do <u>Yesterday</u></h4>
 	        <div class="statuses">
                 {% include "app/partials/statustextboxpartial.html" with placeholder="Yesterday&#39;s Status" name="yesterday" identifier="1" %}
             </div>
-            <br />
             <button type="button" class="btn btn-default btn-add-more" data-container="Yesterday&#39;s status" data-name="yesterday">+</button>
         </div>
 
         <div class="today col-md-3">
-	        <h3 class="text-center">What are you doing <u>Today</u></h3>
+	        <h4 class="text-center">What are you doing <u>Today</u></h4>
             <div class="statuses">
                 {% include "app/partials/statustextboxpartial.html" with placeholder="Today&#39;s Status" name="today" identifier="1" %}
             </div>
-            <br />
             <button type="button" class="btn btn-default btn-add-more" data-container="Today&#39;s status" data-name="today">+</button>
         </div>
 
         <div class="issues col-md-3">
-	        <h3 class="text-center">Are you facing any <u>Issues</u></h3>
+	        <h4 class="text-center">Are you facing any <u>Issues</u></h4>
             <div class="statuses">
                 {% include "app/partials/statustextboxpartial.html" with placeholder="Issue" name="issue" identifier="1" show_droppables=show_droppables %}
             </div>
-            <br />
             <button type="button" class="btn btn-default btn-add-more" data-container="Issues" data-name="issue">+</button>
         </div>
         
         {% if issue_list %}
-        <div class='panel panel-info col-md-3'>
-            <h3 class="text-center">Jira Issues Assigned to you</h3>
-            <ul class='list-group' id="draggablePanelList">
-                {% for item in issue_list %}
-                <li class='list-group-item' data-issueid="{{item.key}}">{{item.fields.summary}}</li>
-                {% endfor %}
-            </ul>
-        </div>
+		<div class='col-md-3'>
+			<h4 class="text-center">Jira Issues Assigned to you</h4>
+			<div class='panel panel-info panel-jira'>
+				<ul class='list-group' id="draggablePanelList">
+					{% for item in issue_list %}
+					<li class='list-group-item' data-issueid="{{item.key}}">{{item.fields.summary}}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
         {% endif %}
 
 	</div>
@@ -88,7 +87,7 @@
             textarea.attr("placeholder", container);
             textarea.attr("name", name+"_"+global_identifier);
 
-            var ul = sib.children(":last-child").children('.panel-info').children("ul");
+            var ul = sib.children(":last-child").children('.panel-status-issues').children("ul");
             ul.attr("data-identifier", global_identifier);
             var ulClasses = ul.attr('class').split(' ');
             var updatedUlClasses = [];
@@ -138,14 +137,14 @@
         {
             try
             {
-                $(".panel-info ul").droppable( "destroy" );
+                $(".panel-status-issues ul").droppable( "destroy" );
             }
             catch(err)
             {
                 // ignore
             }
 
-            $(".panel-info ul").droppable({
+            $(".panel-status-issues ul").droppable({
                 activeClass: "ui-state-default",
                 hoverClass: "ui-state-hover",
                 accept: ":not(.ui-sortable-helper)",
@@ -172,12 +171,13 @@
                     var hiddentemplate = "<input type='hidden' name='' value='' />";
                     var identifier = $(this).data( "identifier" );
                     liName += "_" + identifier;
-                    $( this ).find( ".placeholder" ).remove();
-                    $( "<li class='list-group-item'></li>" )
+                    //$( this ).find( ".placeholder" ).remove();
+                    /*$( "<li class='list-group-item'></li>" )
                         .text( ui.draggable.text() )
                         .appendTo( this )
                         //.attr('name',liName)
-                        .attr('data-issueid', ui.draggable.data('issueid'));
+                        .attr('data-issueid', ui.draggable.data('issueid'));*/
+                    $(this).append(ui.draggable.clone().removeAttr('style'));
                     
                     $( hiddentemplate )
                         .attr('name',liName)
@@ -185,7 +185,31 @@
                         .attr('value', '['+ui.draggable.data('issueid')+']'+ui.draggable.text());
 
                     ui.draggable.remove();
+                    registerDraggable();
                 }
+            });
+        }
+
+        function registerDraggable()
+        {
+            try
+            {
+                $( ".panel-status-issues ul.list-group li.list-group-item:not(.placeholder)" ).draggable("destroy");
+            }
+            catch(err)
+            {
+                // ignore
+            }
+
+            $( ".panel-status-issues ul.list-group li.list-group-item:not(.placeholder)" ).draggable({
+                appendTo: "body",
+                helper: "original",
+                scroll: true,
+                cursor: "move",
+                //snap: true,
+                stack: ".panel-jira",
+                zIndex: 100,
+                revert: 'invalid'
             });
         }
 
@@ -201,14 +225,22 @@
                 appendTo: "body",
                 helper: "original",
                 scroll: true,
-                //grid:[30,20],
-                
-                //cursorAt: { left: 5 },
                 cursor: "move",
-                //snap: true,
                 stack: ".panel-primary",
                 zIndex: 100,
                 revert: 'invalid'
+            });
+
+            $( "#draggablePanelList" ).droppable({
+                activeClass: "ui-state-default",
+                hoverClass: "ui-state-hover",
+                accept: ":not(.ui-sortable-helper)",
+                drop: function( event, ui ) {
+                    ui.draggable.nextAll("input:eq(0)").remove(); // Remove the hidden input adjacent to the dragged status
+                    $(this).append(ui.draggable.clone().removeAttr('style').removeAttr('name'));
+                    ui.draggable.remove();
+                    registerDraggable();
+                }
             });
 
             registerDroppable();
