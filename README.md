@@ -10,3 +10,6 @@ Simple web application to keep track of your daily status reports and update the
 6. Manager View (Shows Statuses of Team)
 7. Allow more than 5 Jira issues to be populated.
 8. Keep the "Attach your tasks/bugs here" constantly at the top of status so as to prompt user for action.
+9. Documentation
+10. Code Comments
+11. Github Builds
