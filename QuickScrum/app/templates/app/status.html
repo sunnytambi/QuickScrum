@@ -200,14 +200,32 @@
             {
                 // ignore
             }
+            
+            try
+            {
+                $( "#draggablePanelList li" ).draggable( "destroy" );
+            }
+            catch(err)
+            {
+                // ignore
+            }
 
             $( ".panel-status-issues ul.list-group li.list-group-item:not(.placeholder)" ).draggable({
                 appendTo: "body",
                 helper: "original",
                 scroll: true,
                 cursor: "move",
-                //snap: true,
                 stack: ".panel-jira",
+                zIndex: 100,
+                revert: 'invalid'
+            });
+            
+            $( "#draggablePanelList li" ).draggable({
+                appendTo: "body",
+                helper: "original",
+                scroll: true,
+                cursor: "move",
+                stack: ".panel-status",
                 zIndex: 100,
                 revert: 'invalid'
             });
