@@ -2,7 +2,6 @@
 Simple web application to keep track of your daily status reports and update them during Scrum meetings or otherwise with super ease to the team and/or client.
 
 # Screenshots
-<img src="https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Change%20Password.PNG" alt="Change Password" border="10" />
 ![Change Password](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Change%20Password.PNG "Change Password")
 ![Dashboard of statuses](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Dashboard%20of%20statuses.PNG "Dashboard of statuses")
 ![Jira Integration Login](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Jira%20Integration%20Login.PNG "Jira Integration Login")
