@@ -1,6 +1,15 @@
 # QuickScrum
 Simple web application to keep track of your daily status reports and update them during Scrum meetings or otherwise with super ease to the team and/or client.
 
+# Screenshots
+![Change Password](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Change%20Password.PNG "Change Password")
+![Dashboard of statuses](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Dashboard%20of%20statuses.PNG "Dashboard of statuses")
+![Jira Integration Login](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Jira%20Integration%20Login.PNG "Jira Integration Login")
+![Login](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Login.PNG "Login")
+![Registration](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Registration.PNG "Registration")
+![Status logging with jira bugs or issues mapped](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Status%20logging%20with%20jira%20bugs%20or%20issues%20mapped.PNG "Status logging with jira bugs or issues mapped")
+![Status logging](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Status%20logging.PNG "Status logging")
+
 # TODO
 1. Email integration (for scrum reminders, sending status through email, etc.)
 2. Slack integration (to post the status on a particular slack channel)
