@@ -10,6 +10,14 @@ Simple web application to keep track of your daily status reports and update the
 ![Change Password](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Change%20Password.PNG "Change Password")
 ![Registration](https://github.com/sunnytambi/QuickScrum/raw/master/Screenshots/Registration.PNG "Registration")
 
+# Launch
+Launch the python project in Visual Studio
+OR
+run
+```python
+python manage.py runserver 
+```
+
 # TODO
 1. Email integration (for scrum reminders, sending status through email, etc.)
 2. Slack integration (to post the status on a particular slack channel)
