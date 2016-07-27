@@ -3,14 +3,16 @@ Definition of urls for QuickScrum.
 """
 
 from django.conf.urls import include, url
-from app.forms import BootstrapAuthenticationForm, JiraAuthenticationForm, BootstrapRegisterForm, BootstrapPasswordChangeForm
-from app.views import status_view, readstatus_view, dashboard_view, login_view, jiralogin_view, register_view, password_change_view
+from app.forms import BootstrapAuthenticationForm, JiraAuthenticationForm, BootstrapRegisterForm, BootstrapPasswordChangeForm, TeamLoginForm
+from app.views import status_view, readstatus_view, dashboard_view, login_view, jiralogin_view, register_view, password_change_view, jiraIssues_view, teamlogin_view, teamcreate_view
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
 from django.contrib import admin
 from django.contrib.auth.views import logout, password_reset, password_reset_confirm, password_reset_done, password_reset_complete
 from django.utils.timezone import now
+from django.views.generic import RedirectView
+from QuickScrum import settings
 admin.autodiscover()
 
 urlpatterns = [
@@ -18,6 +20,7 @@ urlpatterns = [
     url(r'^status/$', status_view, name='status'),
     url(r'^readstatus/(?P<status_id>\w+)/$', readstatus_view, name='readstatus'),
     url(r'^dashboard$', dashboard_view, name='dashboard'),
+    url(r'^getJiraIssues$', jiraIssues_view, name='jiraIssues'),
 
     #url(r'^home$', home, name='home'),
     #url(r'^contact$', contact, name='contact'),
@@ -61,6 +64,29 @@ urlpatterns = [
             'year':now().year,
         },
     }, name='jiralogin'),
+
+    url(r'^teamlogin$', teamlogin_view, {
+        'template_name': 'app/teamsignin.html',
+        'team_form': TeamLoginForm,
+        'extra_context':
+        {
+            'base_url':settings.SUBDOMAIN_URLCONFS.get('url_base_path'),
+            'title':'Enter your team name',
+            'year':now().year,
+        },
+    }, name='teamlogin'),
+
+    
+    url(r'^teamcreate$', teamcreate_view, {
+        'template_name': 'app/teamcreate.html',
+        'team_form': TeamLoginForm,
+        'extra_context':
+        {
+            'base_url':settings.SUBDOMAIN_URLCONFS.get('url_base_path'),
+            'title':'Create a team',
+            'year':now().year,
+        },
+    }, name='teamcreate'),
 
     # TODO - Password Reset
     url(r'^password_reset/$', password_reset, {'post_reset_redirect' : '/password_reset/done/'}, name='password_reset'),

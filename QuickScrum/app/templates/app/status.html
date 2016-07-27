@@ -44,7 +44,7 @@
             <button type="button" class="btn btn-default btn-add-more" data-container="Issues" data-name="issue">+</button>
         </div>
         
-        {% if issue_list %}
+        {% if hasJira %}
 		<div class='col-md-3'>
 			<h4 class="text-center">Jira Issues Assigned to you</h4>
 			<div class='panel panel-info panel-jira'>
@@ -263,7 +263,37 @@
 
             registerDroppable();
             updateTabIndices();
+            
+            {% if hasJira %}
+            fetchJiraIssues();
+            {% endif %}
         });
+
+        {% if hasJira %}
+        function fetchJiraIssues()
+        {
+            console.log("fetching jira") // sanity check
+            $.ajax({
+                url : "/getJiraIssues", // the endpoint
+                type : "POST", // http method
+                //data : { the_post : $('#post-text').val() }, // data sent with the post request
+
+                // handle a successful response
+                success : function(json) {
+                    //$('#post-text').val(''); // remove the value from the input
+                    console.log("success"); // another sanity check
+                    console.log(json); // log the returned json to the console
+                },
+
+                // handle a non-successful response
+                error : function(xhr,errmsg,err) {
+                    //$('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    //    " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                }
+            });
+        }
+        {% endif %}
 
     </script>
 

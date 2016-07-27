@@ -6,6 +6,7 @@ from os import path
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 DEBUG = True
+#APPEND_SLASH = True
 
 JIRA = {
     'site_url':'https://twiinlabs.atlassian.net'
@@ -115,18 +116,37 @@ SESSION_COOKIE_HTTPONLY = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 MIDDLEWARE_CLASSES = (
+    
+    # Subdomain handling
+    'app.middleware.SubdomainURLRoutingMiddleware.SubdomainURLRoutingMiddleware',
+
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.cache.FetchFromCacheMiddleware',
+
+    # Reverse proxy support
+    #'django.middleware.http.SetRemoteAddrFromForwardedFor',
+
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+# This is the urlconf that will be used for any subdomain that is not
+# listed in ``SUBDOMAIN_URLCONFS``, or if the HTTP ``Host`` header does not
+# contain the correct domain.
+# If you're planning on using wildcard subdomains, this should correspond
+# to the urlconf that will be used for the wildcard subdomain. For example,
+# 'accountname.mysite.com' will load the ROOT_URLCONF, since it is not
+# defined in ``SUBDOMAIN_URLCONFS``.
 ROOT_URLCONF = 'QuickScrum.urls'
+
+SUBDOMAIN_URLCONFS = {
+    'url_base_path': 'localhost',
+}
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'QuickScrum.wsgi.application'

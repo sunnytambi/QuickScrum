@@ -1,0 +1,25 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+{% load static %}
+
+<!-- Custom styles for this template -->
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/signin.css' %}" />
+
+<form class="form-signin form-inline well" action="{% url 'teamcreate' %}" method="post">
+	{% csrf_token %}
+
+	<h2 class="form-signin-heading">
+        New team's name
+    </h2>
+	{{ form.name }}
+    .{{base_url}}
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+
+{% endblock %}

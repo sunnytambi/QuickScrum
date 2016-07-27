@@ -48,3 +48,13 @@ class Status_JiraIssue(models.Model):
     status_particulars_id = models.PositiveIntegerField(default=-1)
     jira_issue_id = models.TextField(default='')
     jira_issue_text = models.TextField(default='')
+
+class Teams(models.Model):
+    name = models.TextField()
+
+    def __str__(self):  # __unicode__ on Python 2
+        return self.name
+
+class Team_User(models.Model):
+    team_id = models.ForeignKey(Teams)
+    user_id = models.ForeignKey(User)

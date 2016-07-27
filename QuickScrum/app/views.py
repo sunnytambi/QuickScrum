@@ -9,16 +9,32 @@ from django.forms.forms import NON_FIELD_ERRORS
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.utils.timezone import now
-from app.forms import StatusForm, BootstrapAuthenticationForm, BootstrapRegisterForm
-from app.models import YesterdayStatus, TodayStatus, IssueStatus, Status, Status_JiraIssue
+from app.forms import StatusForm, BootstrapAuthenticationForm, BootstrapRegisterForm, TeamLoginForm
+from app.models import YesterdayStatus, TodayStatus, IssueStatus, Status, Status_JiraIssue, Teams
 import app.jira.JiraIntegration
 from QuickScrum import settings
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponse
+from django.core import serializers
+import json
+from django.core.urlresolvers import reverse
 
+#the team required decorator
+def team_required(f):
+        def wrap(request, *args, **kwargs):
+                #this check the request if team exist, if not it will redirect to team login page
+                if request.team is None:
+                        return HttpResponseRedirect("/teamlogin")
+                return f(request, *args, **kwargs)
+        wrap.__doc__=f.__doc__
+        wrap.__name__=f.__name__
+        return wrap
+
+@team_required
 @csrf_protect
 def login_view(request, template_name, authentication_form, extra_context):
     if request.method == 'POST':
@@ -64,6 +80,7 @@ def login_view(request, template_name, authentication_form, extra_context):
                       template_name,
                       {'title':extra_context['title'], 'year':extra_context['year'], 'form':authentication_form})
 
+@team_required
 @login_required
 @csrf_protect
 def jiralogin_view(request, template_name, authentication_form, extra_context):
@@ -108,6 +125,75 @@ def jiralogin_view(request, template_name, authentication_form, extra_context):
                           {'title':extra_context['title'], 'year':extra_context['year'], 'form':authentication_form})
         else:
             return redirect('/status')
+
+        
+@csrf_protect
+def teamlogin_view(request, template_name, team_form, extra_context):
+
+    if request.method == 'POST': # POST request
+
+        teamname = request.POST['name'].strip()
+        existing_team = None
+        try:
+            existing_team = Teams.objects.get(name=teamname)
+        except Teams.DoesNotExist:
+            existing_team = None
+
+        if existing_team is None: # Team doesn't exist, redirect to Create Team page
+            messages.error(request, 'Team with this name does not exist. Please create one.')
+            return redirect('/teamcreate')
+        else:
+            messages.success(request, 'Please login for '+teamname)
+            return redirect(teamname + '.' + request.META['HTTP_HOST'] + '/login')
+
+    else: # GET request
+        form = team_form()
+        return render(request,
+                        template_name,
+                        context={
+                            'title':extra_context['title'], 
+                            'year':extra_context['year'], 
+                            'base_url':request.META['HTTP_HOST'],
+                            'form':form})
+
+
+        
+@csrf_protect
+def teamcreate_view(request, template_name, team_form, extra_context):
+
+    if request.method == 'POST': # POST request
+        form = team_form(request.POST)
+        teamname = request.POST['name'].strip()
+        existing_team = None
+        try:
+            existing_team = Teams.objects.get(name=teamname)
+        except Teams.DoesNotExist:
+            existing_team = None
+
+        if existing_team is None: # Team doesn't exist, create one and redirect to login
+            form.save()
+            messages.success(request, 'Team \''+teamname+'\' created successfully')
+            return redirect(teamname + '.' + request.META['HTTP_HOST'] + '/login')
+
+        else: # Team name already exist, show error
+            form.errors[NON_FIELD_ERRORS] = form.error_class(['Team already exists'])
+            return render(request,
+                          template_name,
+                          context = {
+                              'title':extra_context['title'], 
+                              'year':extra_context['year'], 
+                              'base_url':request.META['HTTP_HOST'],
+                              'form':form})
+
+    else: # GET request
+        form = team_form()
+        return render(request,
+                        template_name,
+                        context = {
+                              'title':extra_context['title'], 
+                              'year':extra_context['year'], 
+                              'base_url':request.META['HTTP_HOST'],
+                              'form':form})
 
 
 @csrf_protect
@@ -198,6 +284,8 @@ def password_change_view(request, template_name, password_change_form, extra_con
                       template_name,
                       {'title':extra_context['title'], 'year':extra_context['year'], 'form':password_change_form})
 
+
+@team_required
 @login_required
 @csrf_protect
 def status_view(request):
@@ -270,6 +358,7 @@ def status_view(request):
                           'year':now().year,
                           'form':form,
                           'issue_list':issue_list,
+                          'hasJira':hasattr(settings, 'JIRA'),
                           'show_droppables':issue_list is not None,
                       })
     else:
@@ -286,9 +375,12 @@ def status_view(request):
                           'year':now().year,
                           'form':form,
                           'issue_list':issue_list,
+                          'hasJira':hasattr(settings, 'JIRA'),
                           'show_droppables':issue_list is not None,
                       })
 
+
+@team_required
 @login_required
 def readstatus_view(request, status_id):
     """Renders the status page in Read Only mode."""
@@ -314,6 +406,8 @@ def readstatus_view(request, status_id):
                       'jira_site_url':jira_site_url,
                   })
 
+
+@team_required
 @login_required
 def dashboard_view(request):
     """Renders the dashboard page."""
@@ -351,3 +445,32 @@ def getJiraIssueList(request):
             return issue_list
     else:
         return None
+
+def jiraIssues_view(request):
+    response_data = {}
+    if request.method == 'POST':
+        issue_list = getJiraIssueList(request)
+            
+        if not isinstance(issue_list, HttpResponseRedirect): # if there is no jira login
+            response_data = serializers.serialize("json", [issue_list, ])
+
+        #post_text = request.POST.get('the_post')
+
+        #post = Post(text=post_text, author=request.user)
+        #post.save()
+
+        #response_data['result'] = 'Create post successful!'
+        #response_data['postpk'] = post.pk
+        #response_data['text'] = post.text
+        #response_data['created'] = post.created.strftime('%B %d, %Y %I:%M %p')
+        #response_data['author'] = post.author.username
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
